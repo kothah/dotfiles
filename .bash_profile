@@ -219,15 +219,6 @@ alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rul
        echo
    }
 
-#   ---------------------------------------
-#   SSH synced accounts
-#   ---------------------------------------
-alias cscsela='ssh -Y hkothari@ela.cscs.ch'
-alias rootcub='ssh -Y root@cub.inf.usi.ch'
-alias kotharicub='ssh -Y kothari@cub.inf.usi.ch'
-
-alias icstesla='ssh -Y kothah@icstesla1.inf.unisi.ch'
-
 alias applemake='CC=clang CXX=clang++ cmake'
 alias intelcmake='CC=icc CXX=icpc cmake'
 alias gcccmake='cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-5 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-5'
