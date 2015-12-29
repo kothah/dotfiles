@@ -33,10 +33,6 @@ export PATH
 #   ------------------------------------------------------------
    export BLOCKSIZE=1k
 
-#   Add color to terminal
-#   (this is all commented out as I use Mac Terminal Profiles)
-#   ------------------------------------------------------------
-
 #  -----------------------------
 #   2.  MAKE TERMINAL BETTER
 #   -----------------------------
@@ -64,10 +60,8 @@ alias show_options='shopt'                  # Show_options: display bash options
 alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
 alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
 mcd () { mkdir -p "$1" && cd "$1"; }        # mcd:          Makes new Dir and jumps inside
-trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
-alias rm='trash'
 ql () { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in MacOS Quicklook Preview
-alias DT='tee ~/Desktop/terminalOut.txt'    # DT:           Pipe content to file on MacOS Desktop
+alias DT='tee ~/Desktop/terminalOut.txt'    # DT:           Pipe content to file on Desktop
 
 alias h='history' 
 alias now='date +"%T"'
@@ -134,11 +128,6 @@ ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the curr
 ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
 ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
 
-#   spotlight: Search for a file using MacOS Spotlight's metadata
-#   -----------------------------------------------------------
-   spotlight () { mdfind "kMDItemDisplayName == '$@'wc"; }
-
-
 #   ---------------------------
 #   PROCESS MANAGEMENT
 #   ---------------------------
@@ -196,6 +185,5 @@ alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rul
        echo -e "\n${RED}Machine stats :$NC " ; uptime
        echo -e "\n${RED}Current network location :$NC " ; scselect
        echo -e "\n${RED}Public facing IP Address :$NC " ;myip
-       #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
        echo
    }
