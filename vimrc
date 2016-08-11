@@ -1,62 +1,149 @@
-" updated by Hardik Kothari
-" original at https://github.com/amix/vimrc
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
-" the call to :runtime you can find below.  If you wish to change any of those
-" settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
-" will be overwritten everytime an upgrade of the vim packages is performed.
-" It is recommended to make changes after sourcing debian.vim since it alters
-" the value of the 'compatible' option.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file
+filetype plugin on
 
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
+"autoload when saving
+autocmd! bufwritepost .vimrc source %
+autocmd BufNewFile,BufReadPost *.tpp set filetype=cpp
 
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-"set compatible
+set nocompatible              " be iMproved, required
+set number                    " show line number
+filetype off                  " required
 
-" Vim5 and later versions support syntax highlighting. Uncommenting the next
-" line enables syntax highlighting by default.
-if has("syntax")
-  syntax on
-endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" activate pathogen
+filetype off
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-"set background=dark
+call pathogen#infect()
+call pathogen#helptags()
 
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-"if has("autocmd")
-"  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
 
-" Uncomment the following to have Vim load indentation rules and plugins
-" according to the detected filetype.
-"if has("autocmd")
-"  filetype plugin indent on
-"endif
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Nerd Tree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:NERDTreeWinPos = "left"
+let NERDTreeShowHidden=0
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeWinSize=35
+map <leader>nn :NERDTreeToggle<cr>
+map <leader>nb :NERDTreeFromBookmark
+map <leader>nf :NERDTreeFind<cr>
 
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
-set showcmd		" Show (partial) command in status line.
-set showmatch		" Show matching brackets.
-set ignorecase		" Do case insensitive matching
-set smartcase		" Do smart case matching
-set incsearch		" Incremental search
-set autowrite		" Automatically save before commands like :next and :make
-set hidden		" Hide buffers when they are abandoned
-set mouse=a		" Enable mouse usage (all modes)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Nerd Commentor 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
 
-set number 
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
 
-" Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
 
-" 
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/'  }  }
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-multiple-cursors
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:multi_cursor_next_key="\<C-s>"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-airline config (force color)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:airline_theme="kalisi"
+let g:airline_powerline_fonts = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Syntastic (syntax checker)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Python
+" let g:syntastic_python_checkers=['pyflakes']
+
+" Javascript
+" let g:syntastic_javascript_checkers = ['jshint']
+
+" Go
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
+
+" Custom CoffeeScript SyntasticCheck
+"func! SyntasticCheckCoffeescript()
+"    let l:filename = substitute(expand("%:p"), '\(\w\+\)\.coffee', '.coffee.\1.js', '')
+"    execute "tabedit " . l:filename
+"    execute "SyntasticCheck"
+"    execute "Errors"
+"endfunc
+"nnoremap <silent> <leader>l :call SyntasticCheckCoffeescript()<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"=> Git gutter (Git diff)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:gitgutter_enabled=0
+"nnoremap <silent> <leader>d :GitGutterToggle<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"=> svn gutter (svn diff)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:svngutter_enabled=0
+"nnoremap <silent> <leader>d :GitGutterToggle<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set the runtime path to include Vundle and initialize
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ycm_global_ycm_extra_conf = '~/Documents/testingLab/obslib_3879/build/.ycm_extra_conf.py'
+
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+
+let g:Show_diagnostics_ui = 1 "default 1
+
+"let g:clang_format#code_style = 'google'
+
+set tags=./tags,tags;
+set autochdir
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_always_populate_location_list = 1 "default 0
+let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
+let g:ycm_seed_identifiers_with_syntax = 1
+
+let g:ycm_complete_in_strings = 1 "default 1
+let g:ycm_collect_identifiers_from_tags_files = 1 "default 0
+let g:ycm_path_to_python_interpreter = '' "default ''
+
+
+let g:ycm_server_use_vim_stdout = 0 "default 0 (logging to console)
+let g:ycm_server_log_level = 'info' "default info
+
+let g:ycm_confirm_extra_conf = 1
+
+let g:ycm_goto_buffer_command = 'same-buffer' "[ 'same-buffer', 'horizontal-split', 'vertical-split', 'new-tab' ]
+let g:ycm_filetype_whitelist = { '*': 1 }
+let g:ycm_key_invoke_completion = '<C-Space>'
+
+let g:clang_format#style_options = {"AccessModifierOffset" : -4,"AllowShortIfStatementsOnASingleLine" : "true","AlwaysBreakTemplateDeclarations" : "true","Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+" autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+" autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" " if you install vim-operator-user
+" autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+" " Toggle auto formatting:
+" nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" All of your Plugins must be added before the following line
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sections:
 "    -> General
 "    -> VIM user interface
@@ -96,10 +183,8 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" :W sudo saves the file 
+" :W sudo saves the file
 " (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -108,10 +193,8 @@ command W w !sudo tee % > /dev/null
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
+let $LANG='en'
 set langmenu=en
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
 
 " Turn on the WiLd menu
 set wildmenu
@@ -131,7 +214,7 @@ set ruler
 set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -145,23 +228,23 @@ endif
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 
 " For regular expressions turn magic on
 set magic
 
 " Show matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -179,10 +262,10 @@ set foldcolumn=1
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
-syntax enable 
+syntax enable
 
 try
-    colorscheme desert
+    colorscheme base16-default
 catch
 endtry
 
@@ -273,8 +356,8 @@ map <leader>ba :bufdo bd<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -289,7 +372,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -342,6 +425,7 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.script :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -352,7 +436,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " Open Ag and put the cursor in the right position
-map <leader>g :Ag 
+map <leader>g :Ag
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
@@ -412,7 +496,7 @@ function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
     unmenu Foo
-endfunction 
+endfunction
 
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
