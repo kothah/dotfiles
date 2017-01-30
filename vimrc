@@ -1,6 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file
 filetype plugin on
+set shellslash
 
 "autoload when saving
 autocmd! bufwritepost .vimrc source %
@@ -8,7 +9,6 @@ autocmd BufNewFile,BufReadPost *.tpp set filetype=cpp
 
 set nocompatible              " be iMproved, required
 set number                    " show line number
-filetype off                  " required
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 " activate pathogen
@@ -17,6 +17,10 @@ filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vimtex
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:vimtex_complete_enabled = "yes"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Nerd Tree
@@ -30,7 +34,7 @@ map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Nerd Commentor 
+" => Nerd Commentor
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -56,7 +60,7 @@ let g:multi_cursor_next_key="\<C-s>"
 " => vim-airline config (force color)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme="kalisi"
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic (syntax checker)
@@ -294,7 +298,6 @@ set nobackup
 set nowb
 set noswapfile
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -310,7 +313,7 @@ set tabstop=4
 
 " Linebreak on 500 characters
 set lbr
-set tw=500
+set tw=120
 
 set ai "Auto indent
 set si "Smart indent
@@ -469,6 +472,21 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => color columns
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"let &colorcolumn=join(range(121,122),",")
+"hi ColorColumn guibg=#2d2d2d ctermbg=246
+"set breakindent
+"set showbreak=..
+let &colorcolumn=join(range(121,999),",")
+"if has("gui_macvim")
+    hi ColorColumn guibg=#2c2d27 ctermbg=235
+"else
+"    hi ColorColumn guibg=#2c2d27 ctermbg=235
+"endif
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
