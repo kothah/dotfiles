@@ -476,18 +476,21 @@ map <leader>s? z=
 " => color columns
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"let &colorcolumn=join(range(121,122),",")
-"hi ColorColumn guibg=#2d2d2d ctermbg=246
+let &colorcolumn=join(range(121,999),",")
+hi ColorColumn guibg=#2d2d2d ctermbg=246
 "set breakindent
 "set showbreak=..
-let &colorcolumn=join(range(121,999),",")
-"if has("gui_macvim")
-    hi ColorColumn guibg=#2c2d27 ctermbg=235
-"else
-"    hi ColorColumn guibg=#2c2d27 ctermbg=235
-"endif
+"let &colorcolumn=join(range(121,999),",")
+"hi ColorColumn ctermbg=darkgrey guibg=darkgrey
 
 
+" Load the MacVim color scheme.  This can be disabled by loading another color
+" scheme with the :colorscheme command, or by adding the line
+"   let macvim_skip_colorscheme=1
+" " to ~/.vimrc.
+" if !exists("macvim_skip_colorscheme") && !exists("colors_name")
+"     colorscheme macvim
+"     endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
