@@ -1,19 +1,20 @@
-# For MAC 
-# updated by
-# Hardik Kothari
-
 #   -------------------------------
 #   ENVIRONMENT CONFIGURATION
 #   -------------------------------
+# get information about your git branch
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 
 #   Change Prompt
 #   ------------------------------------------------------------
 #   export PS1="\w @ \h(\u)-> "
-   export PS1="________________________________________________________________________________\n| \w @ \h (\u) \n| => "
+export PS1="________________________________________________________________________________\n| \[\033[32m\]\w @\[\033[00m\] \h (\u)[\t]\n| \[\033[33m\]\$(parse_git_branch)\[\033[00m\](\!)=> "
+   #export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
    export PS2="| => "
 #   Set Paths
 #   ------------------------------------------------------------
-   export PATH="$PATH:/usr/local/bin"
+   export PATH="$PATH:/usr/local/bin:/spack/bin"
 
 #   Set Default Editor (change 'Vim' to the editor of your choice)
 #   ------------------------------------------------------------
@@ -40,17 +41,16 @@ alias l.='ls -d -Gp .*'                     # show hidden files
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
-alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+alias ll='ls -FGlAhp -t'                       # Preferred 'ls' implementation
 alias la='ll -Gp -a'                        # show hidden files
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 
-alias diff='colordiff'                      # need colordiff from brew
+#alias diff='colordiff'                      # need colordiff from brew
 alias grep='grep --exclude-dir=".svn" --color=auto'              # colorize the grep command
 alias egrep='egrep --color=auto'            # colorize the egrep command
 alias fgrep='fgrep --color=auto'            # colorize the fgrep command
 
 alias bc='bc -l'                            # calculator with math support
-
 
 cd() { builtin cd "$@"; ls; }               # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
@@ -86,7 +86,7 @@ if [[ "$-" == *i*  ]]; then
     # up and down does autocomplete from history
     bind '"\e[A":history-search-backward'
     bind '"\e[B":history-search-forward'
-
+    
     # Base16 Shell
     BASE16_SHELL="$HOME/dotfiles/base16-shell/base16-ashes.dark.sh"
     [[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
@@ -120,23 +120,6 @@ alias numFiles='echo $(ls -1 | wc -l)'      # numFiles:     Count of non-hidden 
 alias make1mb='mkfile 1m ./1MB.dat'         # make1mb:      Creates a file of 1mb size (all zeros)
 alias make5mb='mkfile 5m ./5MB.dat'         # make5mb:      Creates a file of 5mb size (all zeros)
 alias make10mb='mkfile 10m ./10MB.dat'      # make10mb:     Creates a file of 10mb size (all zeros)§
-#   cdf:  'Cd's to frontmost window of MacOS Finder
-#   ------------------------------------------------------
-cdf () {
-    currFolderPath=$( /usr/bin/osascript <<"    EOT"
-        tell application "Finder"
-           try
-       set currFolder to (folder of the front window as alias)
-          on error
-       set currFolder to (path to desktop folder as alias)
-           end try
-           POSIX path of currFolder
-       end tell
-    EOT
-    )
-   echo "cd to \"$currFolderPath\""
-   cd "$currFolderPath"
-}
 
 #   extract:  Extract most know archives with one command
 #   ---------------------------------------------------------
@@ -173,7 +156,6 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 #   spotlight: Search for a file using MacOS Spotlight's metadata
 #   -----------------------------------------------------------
 spotlight () { mdfind "kMDItemDisplayName == '$@'wc"; }
-
 
 #   ---------------------------
 #   PROCESS MANAGEMENT
@@ -241,33 +223,37 @@ ii() {
     echo
 }
 
-#   ---------------------------------------
-#   SSH synced accounts and personal aliases
-#   ---------------------------------------
-
-alias ela='ssh -Y hkothari@ela.cscs.ch'
-#alias rootcub='ssh -Y root@cub.inf.usi.ch'
-alias kotharicub='ssh -Y kothari@cub.inf.usi.ch'
-
+#   ---------------------------------------:
 alias applemake='CC=clang CXX=clang++ cmake'
 alias intelcmake='CC=icc CXX=icpc cmake'
 alias gcccmake='cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-5 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-5'
 alias pargcccmake='CC=gcc-5 CXX=g++-5 cmake -DENABLE_PAR=MPI'
 
-alias brewups='brew update && brew upgrade && brew cleanup'
-
+#alias brewups='brew update && brew upgrade && brew cleanup'
+alias mvim='/Applications/MacVim.app/Contents/bin/mvim'
 alias load_cscs='mkdir /Volumes/ssh_fs_cscs && sshfs hkothari@ela.cscs.ch:/users/hkothari/kothari /Volumes/ssh_fs_cscs/'
 
-export PATH=/Developer/NVIDIA/CUDA-7.5/bin:$PATH
-export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-7.5/lib:$DYLD_LIBRARY_PATH
+export PATH=/Developer/NVIDIA/CUDA-8.0/bin:$PATH
+export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-8.0/lib:$DYLD_LIBRARY_PATH
 
 #alias fenics='source /Applications/FEniCS.app/Contents/Resources/share/fenics/fenics.conf'
 #alias vim='/usr/local/bin/vim'
 
-source /apps/Modules/3.2.10/init/bash
+#source /apps/Modules/3.2.10/init/bash
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi
-
+#if [ -f $(brew --prefix)/etc/bash_completion ]; then
+#    . $(brew --prefix)/etc/bash_completion
+#fi
+alias ccat='pygmentize -g'
 source ~/.git-completion.bash
+#source /opt/intel/intelpython27/bin/pythonvars.sh
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# Source MOOSE profile
+if [ -f /opt/moose/environments/moose_profile ]; then
+        . /opt/moose/environments/moose_profile
+fi
+alias tmux='TERM=xterm-256color tmux'
+module purge
