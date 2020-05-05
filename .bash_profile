@@ -5,7 +5,6 @@
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
-
 #   Change Prompt
 #   ------------------------------------------------------------
 #   export PS1="\w @ \h(\u)-> "
@@ -45,6 +44,7 @@ alias ll='ls -FGlAhp -t'                       # Preferred 'ls' implementation
 alias la='ll -Gp -a'                        # show hidden files
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 
+alias vim='mvim -v'
 #alias diff='colordiff'                      # need colordiff from brew
 alias grep='grep --exclude-dir=".svn" --color=auto'              # colorize the grep command
 alias egrep='egrep --color=auto'            # colorize the egrep command
@@ -86,7 +86,7 @@ if [[ "$-" == *i*  ]]; then
     # up and down does autocomplete from history
     bind '"\e[A":history-search-backward'
     bind '"\e[B":history-search-forward'
-    
+
     # Base16 Shell
     BASE16_SHELL="$HOME/dotfiles/base16-shell/base16-ashes.dark.sh"
     [[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
@@ -223,6 +223,8 @@ ii() {
     echo
 }
 
+source /opt/moose/environments/moose_profile
+
 #   ---------------------------------------:
 alias applemake='CC=clang CXX=clang++ cmake'
 alias intelcmake='CC=icc CXX=icpc cmake'
@@ -230,30 +232,42 @@ alias gcccmake='cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-5 -DCMAKE_CXX_COMPIL
 alias pargcccmake='CC=gcc-5 CXX=g++-5 cmake -DENABLE_PAR=MPI'
 
 #alias brewups='brew update && brew upgrade && brew cleanup'
-alias mvim='/Applications/MacVim.app/Contents/bin/mvim'
 alias load_cscs='mkdir /Volumes/ssh_fs_cscs && sshfs hkothari@ela.cscs.ch:/users/hkothari/kothari /Volumes/ssh_fs_cscs/'
 
-export PATH=/Developer/NVIDIA/CUDA-8.0/bin:$PATH
-export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-8.0/lib:$DYLD_LIBRARY_PATH
+#export PATH=/Developer/NVIDIA/CUDA-8.0/bin:$PATH
+#export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-8.0/lib:$DYLD_LIBRARY_PATH
 
-#alias fenics='source /Applications/FEniCS.app/Contents/Resources/share/fenics/fenics.conf'
-#alias vim='/usr/local/bin/vim'
-
-#source /apps/Modules/3.2.10/init/bash
-
-#if [ -f $(brew --prefix)/etc/bash_completion ]; then
-#    . $(brew --prefix)/etc/bash_completion
-#fi
 alias ccat='pygmentize -g'
-source ~/.git-completion.bash
-#source /opt/intel/intelpython27/bin/pythonvars.sh
-
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-# Source MOOSE profile
-if [ -f /opt/moose/environments/moose_profile ]; then
-        . /opt/moose/environments/moose_profile
-fi
 alias tmux='TERM=xterm-256color tmux'
-module purge
+export LANG=en_US.UTF-8
+
+##
+# Your previous /Users/kothari/.bash_profile file was backed up as /Users/kothari/.bash_profile.macports-saved_2018-06-18_at_11:56:30
+##
+
+# MacPorts Installer addition on 2018-06-18_at_11:56:30: adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH="/opt/local/share/man:$MANPATH"
+# bash-completion
+#if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+#    . /opt/local/etc/profile.d/bash_completion.sh
+#fi
+
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/moose/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/moose/miniconda/etc/profile.d/conda.sh" ]; then
+        . "/opt/moose/miniconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/moose/miniconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda deactivate
+# <<< conda initialize <<<
